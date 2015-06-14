@@ -10,4 +10,5 @@
         android:id="@+id/detail_text"
         android:layout_height="wrap_content" />
 
+
 </RelativeLayout>

@@ -8,8 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +34,15 @@ public class ListFragment extends Fragment {
         taskList.add(new String[]{"Red", "the color red"});
         taskList.add(new String[]{"Green", "the color green"});
         taskList.add(new String[]{"Blue", "the color blue"});
+        Button button = (Button) rootView.findViewById(R.id.buttonAdd);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
+                Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getActivity(), NewTask.class);
+                startActivity(intent);
+            }
+        });
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
 
 
@@ -71,6 +81,7 @@ public class ListFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
 
         return rootView;
     }
