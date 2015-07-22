@@ -1,7 +1,6 @@
 package com.example.ale.todolist;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -105,10 +104,6 @@ public class NewTask extends ActionBarActivity {
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
 
                     DB.addTask(title.toString(), info.toString(), day, month, year);
-
-                    Cursor c = DB.findTask(title.toString());
-
-                    c.moveToFirst();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);

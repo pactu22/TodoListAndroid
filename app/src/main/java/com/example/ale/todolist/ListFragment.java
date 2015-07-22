@@ -54,8 +54,8 @@ public class ListFragment extends Fragment {
         c.close();
 
 
-            Button button = (Button) rootView.findViewById(R.id.buttonAdd);
-            button.setOnClickListener(new View.OnClickListener() {
+            Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
                     //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
@@ -63,6 +63,7 @@ public class ListFragment extends Fragment {
                     startActivity(intent);
                 }
             });
+
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
 

@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.example.ale.todolist.androidsqlite.DBHelper;
 
@@ -59,6 +59,11 @@ public class DetailActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
         private String idTask;
+        private EditText name;
+        private EditText descr;
+        private EditText data;
+
+
         public PlaceholderFragment() {
         }
 
@@ -77,18 +82,20 @@ public class DetailActivity extends ActionBarActivity {
             Cursor c = DB.findTaskById(idTask);
             c.moveToFirst();
 
+             name = ((EditText) rootView.findViewById(R.id.task_name));
+            name.setText(c.getString(1));
 
-            ((TextView) rootView.findViewById(R.id.task_name))
-                    .setText( c.getString(1));
-            ((TextView) rootView.findViewById(R.id.task_descr))
-                    .setText( c.getString(2));
-            String date = c.getString(3) + "-" + c.getString(4) + "-" +c.getString(5);
-            ((TextView) rootView.findViewById(R.id.task_date))
-                    .setText(date);
+            descr =  ((EditText) rootView.findViewById(R.id.task_descr));
+            descr.setText( c.getString(2));
+
+            data = ((EditText) rootView.findViewById(R.id.task_date));
+            data.setText(c.getString(3) + "-" + c.getString(4) + "-" +c.getString(5));
+
+
                     c.close();
 
-            Button button = (Button) rootView.findViewById(R.id.buttonDelete);
-            button.setOnClickListener(new View.OnClickListener() {
+            Button buttonDelete = (Button) rootView.findViewById(R.id.buttonDelete);
+            buttonDelete.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
                     DB.deleteTask(idTask);
@@ -96,6 +103,20 @@ public class DetailActivity extends ActionBarActivity {
                     startActivity(intent);
                 }
             });
+            Button buttonSave = (Button) rootView.findViewById(R.id.buttonSave);
+            buttonSave.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+                   // String name = ((EditText) rootView.findViewById(R.id.task_name)).getText().toString();
+                    //DB.updateTask(idTask,);
+                    DB.updateTask(idTask, name.getText().toString(), descr.getText().toString(), "1", "2", "3");
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
 
             return rootView;
         }

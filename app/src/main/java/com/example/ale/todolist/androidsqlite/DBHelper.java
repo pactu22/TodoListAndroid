@@ -77,15 +77,21 @@ public class DBHelper extends SQLiteOpenHelper {
         db.insert(Contract.TABLE_TASKS, null, values);
     }
 
-    public Cursor findTask(String taskname) {
-        String query = "Select * FROM " + Contract.TABLE_TASKS + " WHERE " + Contract.Task.COLUMN_TASKNAME + " =  \"" + taskname + "\"";
+    public void updateTask(String id, String name, String description, String day, String month, String year) {
+
+        ContentValues values = new ContentValues();
+        values.put(Contract.Task.COLUMN_TASKNAME, name);
+        values.put(Contract.Task.COLUMN_TASKDESCRIPTION, description);
+        values.put(Contract.Task.COLUMN_DAY, day);
+        values.put(Contract.Task.COLUMN_MONTH, month);
+        values.put(Contract.Task.COLUM_YEAR, year);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery(query, null);
-        //http://www.mkyong.com/android/android-date-picker-example/
-        return cursor;
+        db.update(Contract.TABLE_TASKS, values, Contract.Task._ID +" = "+id, null);
+
     }
+
 
     public Cursor findTaskById(String id) {
         String query = "Select * FROM " + Contract.TABLE_TASKS + " WHERE " + Contract.Task.COLUMN_ID + " =  \"" + id + "\"";
@@ -96,20 +102,6 @@ public class DBHelper extends SQLiteOpenHelper {
         //http://www.mkyong.com/android/android-date-picker-example/
         return cursor;
     }
-    /*
-    public int deleteTaskByName(String task) {
-
-        boolean result = false;
-
-        String selection = "taskname = \"" + task + "\"";
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        //db.delete(Contract.TABLE_TASKS, Contract.Task.COLUMN_TASKNAME + "=" + taskname, null);
-
-        int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
-
-        return rowsDeleted;
-    }*/
 
     public Cursor allTasks(){
         String query = "Select * FROM " + Contract.TABLE_TASKS ;
