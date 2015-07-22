@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.ale.todolist.androidsqlite.DBHelper;
@@ -62,6 +63,7 @@ public class DetailActivity extends ActionBarActivity {
         private EditText name;
         private EditText descr;
         private EditText data;
+        DatePicker calendar;
 
 
         public PlaceholderFragment() {
@@ -86,13 +88,19 @@ public class DetailActivity extends ActionBarActivity {
             name.setText(c.getString(1));
 
             descr =  ((EditText) rootView.findViewById(R.id.task_descr));
-            descr.setText( c.getString(2));
+            descr.setText(c.getString(2));
 
-            data = ((EditText) rootView.findViewById(R.id.task_date));
-            data.setText(c.getString(3) + "-" + c.getString(4) + "-" +c.getString(5));
+            //data = ((EditText) rootView.findViewById(R.id.task_date));
+            //data.setText(c.getString(3) + "-" + c.getString(4) + "-" +c.getString(5));
+
+            calendar = ((DatePicker )rootView.findViewById(R.id.dateTask));
+            int day = Integer.parseInt(c.getString(3));
+            int month = Integer.parseInt(c.getString(4));
+            int year = Integer.parseInt(c.getString(5));
+            calendar.init(year, month , day, null );
 
 
-                    c.close();
+                     c.close();
 
             Button buttonDelete = (Button) rootView.findViewById(R.id.buttonDelete);
             buttonDelete.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +118,8 @@ public class DetailActivity extends ActionBarActivity {
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
                    // String name = ((EditText) rootView.findViewById(R.id.task_name)).getText().toString();
                     //DB.updateTask(idTask,);
-                    DB.updateTask(idTask, name.getText().toString(), descr.getText().toString(), "1", "2", "3");
+                    DB.updateTask(idTask, name.getText().toString(), descr.getText().toString(),
+                            String.valueOf(calendar.getDayOfMonth()), String.valueOf(calendar.getMonth()), String.valueOf(calendar.getYear()));
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                 }

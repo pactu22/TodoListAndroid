@@ -86,6 +86,7 @@ public class NewTask extends ActionBarActivity {
             editInfo = (EditText) rootView.findViewById(R.id.editText_info);
             final DatePicker datePicker = (DatePicker)rootView.findViewById(R.id.datePicker);
 
+
             Button button = (Button)rootView.findViewById(R.id.buttonOk);
 
             button.setOnClickListener(new View.OnClickListener() {
