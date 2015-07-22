@@ -104,7 +104,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor allTasks(){
-        String query = "Select * FROM " + Contract.TABLE_TASKS ;
+        String query = "Select * FROM " + Contract.TABLE_TASKS + " ORDER BY "+
+                Contract.Task.COLUMN_DAY
+                ;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
