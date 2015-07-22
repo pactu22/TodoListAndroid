@@ -32,6 +32,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.ale.todolist.MainActivity" />
         </activity>
+        <provider
+            android:name="com.example.ale.todolist.androidsqlite.MyContentProvider"
+            android:authorities="com.example.ale.todolist.androidsqlite.MyContentProvider"
+            />
     </application>
 
 </manifest>

@@ -1,15 +1,23 @@
 package com.example.ale.todolist;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.ale.todolist.androidsqlite.DBHelper;
 
 
 public class NewTask extends ActionBarActivity {
@@ -65,14 +73,54 @@ public class NewTask extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_new_task, container, false);
 
             editTitle = (EditText) rootView.findViewById(R.id.editText_title);
+            /*
             editTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     if(hasFocus){
                         Toast.makeText(getActivity().getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
+
                     }else {
                         Toast.makeText(getActivity().getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
+
                     }
+                }
+            });*/
+            editInfo = (EditText) rootView.findViewById(R.id.editText_info);
+            final DatePicker datePicker = (DatePicker)rootView.findViewById(R.id.datePicker);
+
+            Button button = (Button)rootView.findViewById(R.id.buttonOk);
+
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Editable title = editTitle.getText();
+                    Editable info = editInfo.getText();
+                    String day = String.valueOf(datePicker.getDayOfMonth());
+                    String month = String.valueOf(datePicker.getMonth());
+                    String year = String.valueOf(datePicker.getYear());
+                    /*Toast.makeText(getActivity().getApplicationContext(),
+                            title.toString() + "-" + info.toString() + "-"+ day + "-" + month + "-"+
+                                    year, Toast.LENGTH_LONG).show();
+*/
+                    DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+
+                    DB.addTask("2", title.toString(), info.toString(), day, month, year);
+
+                    Cursor c = DB.findTask(title.toString());
+
+                    c.moveToFirst();
+
+                    Context context = getActivity().getApplicationContext();
+                    CharSequence text = c.getString(1);
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
                 }
             });
               /*
@@ -93,3 +141,23 @@ public class NewTask extends ActionBarActivity {
         }
     }
 }
+
+/*
+
+
+        DBHelper DB = new DBHelper(this, "ProductDB", null, 1);
+        DB.addProduct("1", "macarrones", "2");
+
+        Cursor c = DB.findProduct("macarrones");
+
+        c.moveToFirst();
+
+        Context context = getApplicationContext();
+        CharSequence text = c.getString(1);
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+
+ */

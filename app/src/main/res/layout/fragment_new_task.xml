@@ -39,9 +39,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Save"
         android:id="@+id/buttonOk"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="150dp" />
+
 
 </RelativeLayout>
