@@ -85,11 +85,33 @@ public class DBHelper extends SQLiteOpenHelper {
         //http://www.mkyong.com/android/android-date-picker-example/
         return cursor;
     }
-    public int deleteTask(String taskname) {
+    public Cursor findTaskById(String id) {
+        String query = "Select * FROM " + Contract.TABLE_TASKS + " WHERE " + Contract.Task.COLUMN_ID + " =  \"" + id + "\"";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery(query, null);
+        //http://www.mkyong.com/android/android-date-picker-example/
+        return cursor;
+    }
+    public int deleteTaskByName(String task) {
 
         boolean result = false;
 
-        String selection = "taskname = \"" + taskname + "\"";
+        String selection = "taskname = \"" + task + "\"";
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //db.delete(Contract.TABLE_TASKS, Contract.Task.COLUMN_TASKNAME + "=" + taskname, null);
+
+        int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
+
+        return rowsDeleted;
+    }
+    public int deleteTask(String idTask) {
+
+
+
+        String selection = "_id = \"" + idTask + "\"";
 
         int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
 

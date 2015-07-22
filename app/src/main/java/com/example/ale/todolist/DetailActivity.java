@@ -1,6 +1,7 @@
 package com.example.ale.todolist;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -9,7 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.ale.todolist.androidsqlite.DBHelper;
 
 
 public class DetailActivity extends ActionBarActivity {
@@ -54,7 +59,7 @@ public class DetailActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
+        private String idTask;
         public PlaceholderFragment() {
         }
 
@@ -64,12 +69,33 @@ public class DetailActivity extends ActionBarActivity {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             // The detail Activity called via intent.  Inspect the intent for forecast data.
+            DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
             Intent intent = getActivity().getIntent();
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                String task = intent.getStringExtra(Intent.EXTRA_TEXT);
-                ((TextView) rootView.findViewById(R.id.detail_text))
-                        .setText(task);
+                idTask = intent.getStringExtra(Intent.EXTRA_TEXT);
+
             }
+            Cursor c = DB.findTaskById(idTask);
+            c.moveToFirst();
+
+
+            ((TextView) rootView.findViewById(R.id.task_name))
+                    .setText( c.getString(1));
+            ((TextView) rootView.findViewById(R.id.task_descr))
+                    .setText( c.getString(2));
+            c.close();
+
+            Button button = (Button) rootView.findViewById(R.id.buttonDelete);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
+                    DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+                    int s = DB.deleteTaskByName("task1");
+                    Toast.makeText(getActivity().getApplicationContext(), "Rows deleted " + s, Toast.LENGTH_LONG).show();
+                }
+            });
+
 
             return rootView;
         }

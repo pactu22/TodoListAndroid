@@ -54,15 +54,15 @@ public class ListFragment extends Fragment {
         c.close();
 
 
-        Button button = (Button) rootView.findViewById(R.id.buttonAdd);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+            Button button = (Button) rootView.findViewById(R.id.buttonAdd);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
 
-                //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), NewTask.class);
-                startActivity(intent);
-            }
-        });
+                    //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getActivity(), NewTask.class);
+                    startActivity(intent);
+                }
+            });
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
 
