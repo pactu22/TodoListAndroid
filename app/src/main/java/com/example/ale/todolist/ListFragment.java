@@ -45,7 +45,7 @@ public class ListFragment extends Fragment {
         Cursor c = DB.allTasks();
         final List<String[]> taskList = new ArrayList<>();
         c.moveToFirst();
-        Toast toast = Toast.makeText(context, "Elements " + c.getCount() +  " c.)" + c.getString(1), duration);
+        Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
         toast.show();
         taskList.add(new String[]{c.getString(0), c.getString(1), c.getString(2)});
         while(c.moveToNext()){

@@ -83,7 +83,10 @@ public class DetailActivity extends ActionBarActivity {
                     .setText( c.getString(1));
             ((TextView) rootView.findViewById(R.id.task_descr))
                     .setText( c.getString(2));
-            c.close();
+            String date = c.getString(3) + "-" + c.getString(4) + "-" +c.getString(5);
+            ((TextView) rootView.findViewById(R.id.task_date))
+                    .setText(date);
+                    c.close();
 
             Button button = (Button) rootView.findViewById(R.id.buttonDelete);
             button.setOnClickListener(new View.OnClickListener() {
