@@ -106,7 +106,7 @@ public class NewTask extends ActionBarActivity {
 */
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
 
-                    DB.addTask("2", title.toString(), info.toString(), day, month, year);
+                    DB.addTask(title.toString(), info.toString(), day, month, year);
 
                     Cursor c = DB.findTask(title.toString());
 

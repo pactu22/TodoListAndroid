@@ -1,6 +1,8 @@
 package com.example.ale.todolist;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.LinkedList;
+import com.example.ale.todolist.androidsqlite.DBHelper;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,19 +34,36 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        final List<String[]> taskList = new LinkedList<String[]>();
-        taskList.add(new String[]{"Red", "the color red"});
-        taskList.add(new String[]{"Green", "the color green"});
-        taskList.add(new String[]{"Blue", "the color blue"});
+
+
+        DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+
+        Context context = getActivity().getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        //Cursor c = DB.findTask("prueba");
+        Cursor c = DB.allTasks();
+        final List<String[]> taskList = new ArrayList<>();
+        c.moveToFirst();
+        Toast toast = Toast.makeText(context, "Elements " + c.getCount() +  " c.)" + c.getString(1), duration);
+        toast.show();
+        taskList.add(new String[]{c.getString(0), c.getString(1), c.getString(2)});
+        while(c.moveToNext()){
+            taskList.add(new String[]{c.getString(0), c.getString(1), c.getString(2)});
+        }
+        c.close();
+
+
         Button button = (Button) rootView.findViewById(R.id.buttonAdd);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getActivity(), NewTask.class);
                 startActivity(intent);
             }
         });
+
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
 
 
@@ -54,7 +75,6 @@ public class ListFragment extends Fragment {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-
                 // Must always return just a View.
                 View view = super.getView(position, convertView, parent);
 
@@ -64,8 +84,8 @@ public class ListFragment extends Fragment {
                 String[] entry = taskList.get(position);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                text1.setText(entry[0]);
-                text2.setText(entry[1]);
+                text1.setText(entry[1]);
+                text2.setText(entry[2]);
                 return view;
             }
         };
@@ -75,9 +95,9 @@ public class ListFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String task = adapter.getItem(position)[0];
+                String idTask = adapter.getItem(position)[0];
                 Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, task);
+                        .putExtra(Intent.EXTRA_TEXT, idTask);
                 startActivity(intent);
             }
         });

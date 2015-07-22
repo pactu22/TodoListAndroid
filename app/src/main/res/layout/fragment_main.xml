@@ -5,16 +5,23 @@
 
     <ListView
         android:id="@+id/listView"
-        android:layout_height="wrap_content"
+        android:layout_height="433dp"
         android:layout_width="match_parent">
     </ListView>
 
-    <Button
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New task"
-        android:id="@+id/buttonAdd"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp" />
+        android:layout_gravity="center_horizontal">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Task"
+            android:id="@+id/buttonAdd"
+            android:layout_gravity="left|center_vertical" />
+    </FrameLayout>
+
 
 </LinearLayout>

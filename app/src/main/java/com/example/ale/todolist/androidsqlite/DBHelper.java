@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "taskDB.db";
 
     private ContentResolver myCR;
@@ -62,7 +62,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return rowsDeleted;
     }*/
 
-    public void addTask(String id, String name, String description, String day, String month, String year) {
+    public void addTask(String name, String description, String day, String month, String year) {
 
         ContentValues values = new ContentValues();
         values.put(Contract.Task.COLUMN_TASKNAME, name);
