@@ -102,7 +102,6 @@ public class ListFragment extends Fragment {
             }
         };
         listView.setAdapter(adapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
