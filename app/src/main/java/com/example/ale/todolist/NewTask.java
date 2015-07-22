@@ -95,6 +95,8 @@ public class NewTask extends ActionBarActivity {
 
                     Editable title = editTitle.getText();
                     Editable info = editInfo.getText();
+                    //LONG???????      datePicker.getCalendarView().getDate();
+
                     String day = String.valueOf(datePicker.getDayOfMonth());
                     String month = String.valueOf(datePicker.getMonth());
                     String year = String.valueOf(datePicker.getYear());

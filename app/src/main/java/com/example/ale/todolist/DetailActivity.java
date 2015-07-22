@@ -62,7 +62,6 @@ public class DetailActivity extends ActionBarActivity {
         private String idTask;
         private EditText name;
         private EditText descr;
-        private EditText data;
         DatePicker calendar;
 
 

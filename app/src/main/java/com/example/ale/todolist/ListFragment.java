@@ -1,10 +1,12 @@
 package com.example.ale.todolist;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.example.ale.todolist.androidsqlite.DBHelper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ import java.util.List;
  */
 public class ListFragment extends Fragment {
     private ArrayAdapter<String[]> adapter;
-
+    private List<String[]> taskList;
     public ListFragment() {
     }
 
@@ -43,22 +46,32 @@ public class ListFragment extends Fragment {
 
         //Cursor c = DB.findTask("prueba");
         Cursor c = DB.allTasks();
-        final List<String[]> taskList = new ArrayList<>();
+         taskList = new ArrayList<>();
         c.moveToFirst();
         Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
         toast.show();
-        taskList.add(new String[]{c.getString(0), c.getString(1), c.getString(2)});
+
+        int day =Integer.parseInt(c.getString(3));
+        int month =Integer.parseInt(c.getString(4));
+        int year =Integer.parseInt(c.getString(5));
+
+        taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
+                String.valueOf(remainingDays(day,month,year))});
         while(c.moveToNext()){
-            taskList.add(new String[]{c.getString(0), c.getString(1), c.getString(2)});
+
+            day =Integer.parseInt(c.getString(3));
+            month =Integer.parseInt(c.getString(4));
+            year =Integer.parseInt(c.getString(5));
+
+            taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
+                    remainingDays(day,month,year)});
         }
         c.close();
 
 
-            Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
+        Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
-                    //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getActivity(), NewTask.class);
                     startActivity(intent);
                 }
@@ -66,8 +79,6 @@ public class ListFragment extends Fragment {
 
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-
-
         adapter = new ArrayAdapter<String[]>(
                 getActivity(),
                 android.R.layout.simple_list_item_2,
@@ -103,9 +114,28 @@ public class ListFragment extends Fragment {
             }
         });
 
-
         return rootView;
     }
+
+    private int remainingDays(int day, int month, int year) {
+        //TODO bear in mind the months and years
+        int chosenDays = day + month*28 + year *365;
+        Calendar calendar = Calendar.getInstance();
+
+        int cDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int cYear = calendar.get(Calendar.YEAR);
+        int cMonth = calendar.get(Calendar.MONTH); // Note: zero based!
+
+        int currentDays = cDay + (cMonth+1)*28 + cYear*365;
+        //int cHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+
+        Log.d("cDay: " , String.valueOf(cDay));
+        Log.d("chosen: ", String.valueOf(day));
+        return (day - cDay);
+    }
+
+
 }
 
 
