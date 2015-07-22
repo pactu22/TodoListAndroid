@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -50,17 +51,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return cursor;
     }
+*/
+    public int deleteTask(String idTask) {
 
-    public int deleteProduct(String productname) {
+        String query = "Delete FROM " + Contract.TABLE_TASKS + " WHERE " + Contract.Task.COLUMN_ID + " =  \"" + idTask + "\"";
 
-        boolean result = false;
+        Log.d("error", query);
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        String selection = "productname = \"" + productname + "\"";
-
-        int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
-
-        return rowsDeleted;
-    }*/
+       db.execSQL(query);
+        return 0;
+    }
 
     public void addTask(String name, String description, String day, String month, String year) {
 
@@ -85,15 +86,17 @@ public class DBHelper extends SQLiteOpenHelper {
         //http://www.mkyong.com/android/android-date-picker-example/
         return cursor;
     }
+
     public Cursor findTaskById(String id) {
         String query = "Select * FROM " + Contract.TABLE_TASKS + " WHERE " + Contract.Task.COLUMN_ID + " =  \"" + id + "\"";
-
+        Log.d("error", query);
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
         //http://www.mkyong.com/android/android-date-picker-example/
         return cursor;
     }
+    /*
     public int deleteTaskByName(String task) {
 
         boolean result = false;
@@ -106,17 +109,8 @@ public class DBHelper extends SQLiteOpenHelper {
         int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
 
         return rowsDeleted;
-    }
-    public int deleteTask(String idTask) {
+    }*/
 
-
-
-        String selection = "_id = \"" + idTask + "\"";
-
-        int rowsDeleted = myCR.delete(MyContentProvider.CONTENT_URI, selection, null);
-
-        return rowsDeleted;
-    }
     public Cursor allTasks(){
         String query = "Select * FROM " + Contract.TABLE_TASKS ;
 

@@ -9,9 +9,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 
-/**
- * Created by cgcalatrava on 02/06/2015.
- */
+
 public class MyContentProvider extends ContentProvider {
 
     private DBHelper myDB;

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ale.todolist.androidsqlite.DBHelper;
 
@@ -91,14 +90,12 @@ public class DetailActivity extends ActionBarActivity {
             Button button = (Button) rootView.findViewById(R.id.buttonDelete);
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-
-                    //Toast.makeText(getActivity().getApplicationContext(), "Hola", Toast.LENGTH_LONG).show();
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
-                    int s = DB.deleteTaskByName("task1");
-                    Toast.makeText(getActivity().getApplicationContext(), "Rows deleted " + s, Toast.LENGTH_LONG).show();
+                    DB.deleteTask(idTask);
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
                 }
             });
-
 
             return rootView;
         }

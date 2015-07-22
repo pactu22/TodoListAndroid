@@ -107,25 +107,6 @@ public class ListFragment extends Fragment {
     }
 }
 
-/*
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-
-        // ListView Item Click Listener
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    String task = adapter.getItem(position);
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .putExtra(Intent.EXTRA_TEXT, task);
-                    startActivity(intent);
-                }
-            });
-
-*/
-//return rootView;
 
 
 

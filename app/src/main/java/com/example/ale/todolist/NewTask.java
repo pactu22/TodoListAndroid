@@ -1,6 +1,5 @@
 package com.example.ale.todolist;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.ale.todolist.androidsqlite.DBHelper;
 
@@ -112,52 +110,13 @@ public class NewTask extends ActionBarActivity {
 
                     c.moveToFirst();
 
-                    Context context = getActivity().getApplicationContext();
-                    CharSequence text = c.getString(1);
-                    int duration = Toast.LENGTH_SHORT;
-
-                    Toast toast = Toast.makeText(context, text, duration);
-                    toast.show();
-
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
                 }
             });
-              /*
-            editInfo = (EditText) rootView.findViewById(R.id.editText_title);
-            editInfo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    if(hasFocus){
-                        Toast.makeText(getActivity().getApplicationContext(), "got the focus", Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getActivity().getApplicationContext(), "lost the focus", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });*/
-
 
             return rootView;
         }
     }
 }
 
-/*
-
-
-        DBHelper DB = new DBHelper(this, "ProductDB", null, 1);
-        DB.addProduct("1", "macarrones", "2");
-
-        Cursor c = DB.findProduct("macarrones");
-
-        c.moveToFirst();
-
-        Context context = getApplicationContext();
-        CharSequence text = c.getString(1);
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-
-
- */
