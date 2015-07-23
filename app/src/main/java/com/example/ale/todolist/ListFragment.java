@@ -7,7 +7,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -39,34 +42,7 @@ public class ListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-        DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
-
-        Context context = getActivity().getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        //Cursor c = DB.findTask("prueba");
-        Cursor c = DB.allTasks();
-         taskList = new ArrayList<>();
-        c.moveToFirst();
-        Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
-        toast.show();
-
-        int day =Integer.parseInt(c.getString(3));
-        int month =Integer.parseInt(c.getString(4));
-        int year =Integer.parseInt(c.getString(5));
-
-        taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                String.valueOf(remainingDays(day,month,year))});
-        while(c.moveToNext()){
-
-            day =Integer.parseInt(c.getString(3));
-            month =Integer.parseInt(c.getString(4));
-            year =Integer.parseInt(c.getString(5));
-
-            taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                    remainingDays(day,month,year)});
-        }
-        c.close();
+        loadTasksInList();
 
 
         Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
@@ -79,6 +55,8 @@ public class ListFragment extends Fragment {
 
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        registerForContextMenu(listView);
+
         adapter = new ArrayAdapter<String[]>(
                 getActivity(),
                 android.R.layout.simple_list_item_2,
@@ -113,25 +91,98 @@ public class ListFragment extends Fragment {
             }
         });
 
+
         return rootView;
     }
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (v.getId()==R.id.listView) {
+            String[] menuItems = getResources().getStringArray(R.array.menu);
+            for (int i = 0; i<menuItems.length; i++) {
+                menu.add(Menu.NONE, i, i, menuItems[i]);
+            }
 
-    private int remainingDays(int day, int month, int year) {
-        //TODO bear in mind the months and years
-        int chosenDays = day + month*28 + year *365;
+            menu.setHeaderTitle("Action:");
+
+        }
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.menu);
+
+       String menuItemName = menuItems[menuItemIndex];
+        if(menuItemName.equals("Delete")){
+
+            String[] tasks = taskList.get(info.position);
+            Log.d("SIZE", String.valueOf(taskList.size()));
+            Log.d("e********e", tasks[0]); //id
+            DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+            DB.deleteTask(tasks[0]);
+            Intent intent = getActivity().getIntent();
+            getActivity().finish();
+            startActivity(intent);
+            return true;
+        }
+        return false;
+
+    }
+
+    private int remainingDays(int chosenDay, int chosenMonth, int chosenYear) {
         Calendar calendar = Calendar.getInstance();
 
-        int cDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int cYear = calendar.get(Calendar.YEAR);
-        int cMonth = calendar.get(Calendar.MONTH); // Note: zero based!
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1; // Note: zero based!
 
-        int currentDays = cDay + (cMonth+1)*28 + cYear*365;
+        int daysLeft = (chosenDay - currentDay) + ((chosenMonth + 1) - currentMonth)*28 +
+                (chosenYear - currentYear)*365;
+
         //int cHour = calendar.get(Calendar.HOUR_OF_DAY);
 
+        //Log.d("currentDay: " , String.valueOf(currentDay));
+        //Log.d("currentYear: ", String.valueOf(currentYear));
+        //Log.d("currentMonth: " , String.valueOf(currentMonth));
+        //Log.d("day: " , String.valueOf(day));
+        //Log.d("month: ", String.valueOf(month+1));
+        //Log.d("year: ", String.valueOf(year));
 
-        Log.d("cDay: " , String.valueOf(cDay));
-        Log.d("chosen: ", String.valueOf(day));
-        return (day - cDay);
+        return daysLeft;
+    }
+
+    private void loadTasksInList(){
+        DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
+
+        Context context = getActivity().getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        //Cursor c = DB.findTask("prueba");
+        Cursor c = DB.allTasks();
+        taskList = new ArrayList<>();
+        c.moveToFirst();
+        Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
+        toast.show();
+
+        int day =Integer.parseInt(c.getString(3));
+        int month =Integer.parseInt(c.getString(4));
+        int year =Integer.parseInt(c.getString(5));
+
+        taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
+                String.valueOf(remainingDays(day,month,year))});
+        while(c.moveToNext()){
+
+            day =Integer.parseInt(c.getString(3));
+            month =Integer.parseInt(c.getString(4));
+            year =Integer.parseInt(c.getString(5));
+
+            taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
+                    remainingDays(day,month,year)});
+        }
+        c.close();
     }
 
 

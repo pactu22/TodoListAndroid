@@ -1,19 +1,10 @@
 package com.example.ale.todolist;
 
-import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.example.ale.todolist.androidsqlite.DBHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class AllTasks extends ActionBarActivity {
@@ -27,42 +18,6 @@ public class AllTasks extends ActionBarActivity {
 
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.listTasks);
-        // Defined Array values to show in ListView
-        DBHelper DB = new DBHelper(getApplicationContext(), "taskDB", null, 1);
-
-        Context context = getApplicationContext();
-        int duration = Toast.LENGTH_SHORT;
-
-        //Cursor c = DB.findTask("prueba");
-        Cursor c = DB.allTasks();
-        List<String> list = new ArrayList<>();
-        c.moveToFirst();
-        Toast toast = Toast.makeText(context, "Elements " + c.getCount() +  " c.)" + c.getString(1), duration);
-        toast.show();
-
-        while(c.moveToNext()){
-            toast = Toast.makeText(context, "asd", duration);
-            toast.show();
-
-            list.add(c.getString(1));
-
-        }
-
-
-        c.close();
-
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, list);
-
-
-        // Assign adapter to ListView
-        listView.setAdapter(adapter);
 
     }
 
@@ -88,4 +43,6 @@ public class AllTasks extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
+
