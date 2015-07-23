@@ -14,7 +14,7 @@ public class Contract {
                     Task.COLUMN_TASKDESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     Task.COLUMN_DAY + TEXT_TYPE + COMMA_SEP +
                     Task.COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
-                    Task.COLUMN_YEAR + TEXT_TYPE + COMMA_SEP +
+                    Task.COLUMN_YEAR + TEXT_TYPE +
 
 
                     " )";

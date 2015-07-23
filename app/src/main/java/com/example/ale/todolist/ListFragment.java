@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class ListFragment extends Fragment {
     private ArrayAdapter<String[]> adapter;
-    private List<String[]> taskList;
+    private List<String[]> taskList = new ArrayList<String[]>();
     public ListFragment() {
     }
 
@@ -160,33 +160,39 @@ public class ListFragment extends Fragment {
         Context context = getActivity().getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
 
-        //Cursor c = DB.findTask("prueba");
         Cursor c = DB.allTasks();
         taskList = new ArrayList<>();
-        c.moveToFirst();
-        Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
-        toast.show();
+        if(!c.moveToFirst()){
+            Log.d("NO ELEMENTS", String.valueOf(c.getCount()));
+        }
+        else{
+            Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
+            toast.show();
+            Log.d("ELEMENT", String.valueOf(c.getCount()));
 
-        int day =Integer.parseInt(c.getString(3));
-        int month =Integer.parseInt(c.getString(4));
-        int year =Integer.parseInt(c.getString(5));
+            int day =Integer.parseInt(c.getString(3));
+            int month =Integer.parseInt(c.getString(4));
+            int year =Integer.parseInt(c.getString(5));
 
 //        Log.d("TIMESTAMP CHOSEN!!!!!!!!!!", c.getString(6));
 
 
-        taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                String.valueOf(remainingDays(day,month,year))});
-        while(c.moveToNext()){
-
-            day =Integer.parseInt(c.getString(3));
-            month =Integer.parseInt(c.getString(4));
-            year =Integer.parseInt(c.getString(5));
-
             taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                    remainingDays(day,month,year)});
+                    String.valueOf(remainingDays(day,month,year))});
+            while(c.moveToNext()){
+
+                day =Integer.parseInt(c.getString(3));
+                month =Integer.parseInt(c.getString(4));
+                year =Integer.parseInt(c.getString(5));
+
+                taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
+                        remainingDays(day,month,year)});
+            }
+            c.close();
+
+
         }
-        c.close();
-    }
+        }
 
 
 }

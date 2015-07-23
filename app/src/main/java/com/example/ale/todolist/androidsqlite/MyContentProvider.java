@@ -1,6 +1,7 @@
 package com.example.ale.todolist.androidsqlite;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -13,6 +14,8 @@ import android.text.TextUtils;
 public class MyContentProvider extends ContentProvider {
 
     private DBHelper myDB;
+    private SQLiteDatabase database;
+
 
     private static final String AUTHORITY = "com.example.ale.todolist.androidsqlite.MyContentProvider";
     public static final String TASKS_TABLE = Contract.TABLE_TASKS;
@@ -31,7 +34,12 @@ public class MyContentProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         myDB = new DBHelper(getContext(), null, null, 1);
+        /* With these lines, the db will be created every time the app starts, so the values stored will disappear
+        database = myDB.getWritableDatabase();
+        if(database == null) return false;
+        else return true; */
         return false;
+
     }
 
     @Override
@@ -54,6 +62,8 @@ public class MyContentProvider extends ContentProvider {
 
         Cursor cursor = queryBuilder.query(myDB.getReadableDatabase(),
                 projection, selection, selectionArgs, null, null, sortOrder);
+        //register to watch a content URI for changes
+
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
         return cursor;
     }
@@ -73,6 +83,12 @@ public class MyContentProvider extends ContentProvider {
         switch (uriType) {
             case TASKS:
                 id = sqlDB.insert(Contract.TABLE_TASKS, null, values);
+                if(id > 0) {
+                    Uri newUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                    getContext().getContentResolver().notifyChange(newUri, null);
+                    return newUri;
+                }
+
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);

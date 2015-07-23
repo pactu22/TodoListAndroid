@@ -113,7 +113,8 @@ public class NewTask extends ActionBarActivity {
 */
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
 
-                    DB.addTask(title.toString(), info.toString(), day, month, year, String.valueOf( datePicker.getCalendarView().getDate()));
+
+                    DB.addTask(title.toString(), info.toString(), day, month, year);
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
