@@ -37,14 +37,7 @@
             android:name=".androidsqlite.MyContentProvider"
             android:authorities="com.example.ale.todolist.androidsqlite.MyContentProvider" />
 
-        <activity
-            android:name=".AllTasks"
-            android:label="@string/title_activity_all_tasks"
-            android:parentActivityName=".MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ale.todolist.MainActivity" />
-        </activity>
+
     </application>
 
 </manifest>

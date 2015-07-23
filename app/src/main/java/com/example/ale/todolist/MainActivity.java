@@ -1,15 +1,13 @@
 package com.example.ale.todolist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
-    ListView listView ;
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -21,8 +19,7 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new ListFragment())
                     .commit();
         }
-        listView = (ListView) findViewById(R.id.listView);
-        Log.d(LOG_TAG, "ERR!");
+
 
 
 
@@ -46,6 +43,10 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_create) {
+            Intent intent = new Intent(this, NewTask.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

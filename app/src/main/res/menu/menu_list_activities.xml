@@ -3,4 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".ListActivities">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_create"
+
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/action_create"
+        app:showAsAction="always" />
+
 </menu>

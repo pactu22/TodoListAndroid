@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +32,7 @@ import java.util.List;
 public class ListFragment extends Fragment {
     private ArrayAdapter<String[]> adapter;
     private List<String[]> taskList = new ArrayList<String[]>();
+    ImageButton imageButton;
     public ListFragment() {
     }
 
@@ -43,15 +44,26 @@ public class ListFragment extends Fragment {
 
 
         loadTasksInList();
+        imageButton = (ImageButton) rootView.findViewById(R.id.imageButtonAdd);
+        imageButton.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View arg0) {
 
+                Intent intent = new Intent(getActivity(), NewTask.class);
+                startActivity(intent);
+
+            }
+
+        });
+        /*
         Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
         buttonAdd.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), NewTask.class);
                     startActivity(intent);
                 }
-            });
+            });*/
 
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
@@ -164,6 +176,7 @@ public class ListFragment extends Fragment {
         taskList = new ArrayList<>();
         if(!c.moveToFirst()){
             Log.d("NO ELEMENTS", String.valueOf(c.getCount()));
+
         }
         else{
             Toast toast = Toast.makeText(context, "Elements " + c.getCount() , duration);
