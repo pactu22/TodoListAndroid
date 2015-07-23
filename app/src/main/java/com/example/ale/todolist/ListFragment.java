@@ -171,6 +171,9 @@ public class ListFragment extends Fragment {
         int month =Integer.parseInt(c.getString(4));
         int year =Integer.parseInt(c.getString(5));
 
+//        Log.d("TIMESTAMP CHOSEN!!!!!!!!!!", c.getString(6));
+
+
         taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
                 String.valueOf(remainingDays(day,month,year))});
         while(c.moveToNext()){

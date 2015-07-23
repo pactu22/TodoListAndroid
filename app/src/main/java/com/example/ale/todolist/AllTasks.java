@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.example.ale.todolist.androidsqlite.DBHelper;
+
 
 public class AllTasks extends ActionBarActivity {
     ListView listView;
@@ -18,7 +20,8 @@ public class AllTasks extends ActionBarActivity {
 
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.listTasks);
-
+        DBHelper db = new DBHelper(getApplicationContext(),"tasksDK",null, 1);
+        db.create();
     }
 
 

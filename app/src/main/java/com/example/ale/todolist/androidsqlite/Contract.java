@@ -14,7 +14,8 @@ public class Contract {
                     Task.COLUMN_TASKDESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     Task.COLUMN_DAY + TEXT_TYPE + COMMA_SEP +
                     Task.COLUMN_MONTH + TEXT_TYPE + COMMA_SEP +
-                    Task.COLUM_YEAR + TEXT_TYPE +
+                    Task.COLUMN_YEAR + TEXT_TYPE + COMMA_SEP +
+
 
                     " )";
 
@@ -29,7 +30,7 @@ public class Contract {
         public static final String COLUMN_TASKDESCRIPTION = "taskdescription";
         public static final String COLUMN_DAY = "taskday";
         public static final String COLUMN_MONTH = "taskmonth";
-        public static final String COLUM_YEAR = "taskyear";
+        public static final String COLUMN_YEAR = "taskyear";
 
 
     }

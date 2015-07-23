@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "taskDB.db";
 
     private ContentResolver myCR;
@@ -19,16 +19,21 @@ public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         myCR = context.getContentResolver();
+
+        Log.d("UUUUUUUU", "UDATING");
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("CCCCCCCCCCCc", "CCCCCCCCc");
         db.execSQL(Contract.SQL_CREATE_ENTRIES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.TABLE_TASKS);
+        Log.d("ERRRRRRRRRRRRRRr", "UDATING");
+        if(DATABASE_VERSION > 2 ) db.execSQL("DROP TABLE IF EXISTS " + Contract.TABLE_TASKS);
     }
 
    /* public void addProduct(String id, String name, String qqt) {
@@ -63,14 +68,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return 0;
     }
 
-    public void addTask(String name, String description, String day, String month, String year) {
+    public void addTask(String name, String description, String day, String month, String year, String date) {
 
         ContentValues values = new ContentValues();
         values.put(Contract.Task.COLUMN_TASKNAME, name);
         values.put(Contract.Task.COLUMN_TASKDESCRIPTION, description);
         values.put(Contract.Task.COLUMN_DAY, day);
         values.put(Contract.Task.COLUMN_MONTH, month);
-        values.put(Contract.Task.COLUM_YEAR, year);
+        values.put(Contract.Task.COLUMN_YEAR, year);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -84,7 +89,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(Contract.Task.COLUMN_TASKDESCRIPTION, description);
         values.put(Contract.Task.COLUMN_DAY, day);
         values.put(Contract.Task.COLUMN_MONTH, month);
-        values.put(Contract.Task.COLUM_YEAR, year);
+        values.put(Contract.Task.COLUMN_YEAR, year);
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -104,14 +109,22 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public Cursor allTasks(){
-        String query = "Select * FROM " + Contract.TABLE_TASKS + " ORDER BY "+
-                Contract.Task.COLUMN_DAY
-                ;
+        String query = "Select * FROM " + Contract.TABLE_TASKS;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery(query, null);
         //http://www.mkyong.com/android/android-date-picker-example/
         return cursor;
+    }
+
+    public void create() {
+
+        String query = Contract.SQL_CREATE_ENTRIES;
+
+        Log.d("cccccccccccccccccc", query);
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL(query);
     }
 }

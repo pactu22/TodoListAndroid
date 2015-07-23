@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +16,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.ale.todolist.androidsqlite.DBHelper;
+
+import java.util.Date;
 
 
 public class NewTask extends ActionBarActivity {
@@ -100,13 +103,17 @@ public class NewTask extends ActionBarActivity {
                     String day = String.valueOf(datePicker.getDayOfMonth());
                     String month = String.valueOf(datePicker.getMonth());
                     String year = String.valueOf(datePicker.getYear());
+
+                    Date date = new Date(datePicker.getYear(),  datePicker.getMonth(), datePicker.getDayOfMonth());
+                    Log.d("TIMESTAMP CHOSEN", String.valueOf( datePicker.getCalendarView().getDate()));
+                    Log.d("CURRENT TIMESTAMP", String.valueOf(new Date().getTime()));
                     /*Toast.makeText(getActivity().getApplicationContext(),
                             title.toString() + "-" + info.toString() + "-"+ day + "-" + month + "-"+
                                     year, Toast.LENGTH_LONG).show();
 */
                     DBHelper DB = new DBHelper(getActivity().getApplicationContext(), "taskDB", null, 1);
 
-                    DB.addTask(title.toString(), info.toString(), day, month, year);
+                    DB.addTask(title.toString(), info.toString(), day, month, year, String.valueOf( datePicker.getCalendarView().getDate()));
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
