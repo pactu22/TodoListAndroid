@@ -43,11 +43,10 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-        loadTasksInList();
         imageButton = (ImageButton) rootView.findViewById(R.id.imageButtonAdd);
         imageButton.setOnClickListener(new View.OnClickListener() {
 
@@ -60,18 +59,10 @@ public class ListFragment extends Fragment {
             }
 
         });
-        /*
-        Button buttonAdd = (Button) rootView.findViewById(R.id.buttonAdd);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), NewTask.class);
-                    startActivity(intent);
-                }
-            });*/
-
-
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
         registerForContextMenu(listView);
+
+        loadTasksInList();
 
         adapter = new ArrayAdapter<String[]>(
                 getActivity(),
@@ -166,20 +157,22 @@ public class ListFragment extends Fragment {
         //Log.d("day: " , String.valueOf(day));
         //Log.d("month: ", String.valueOf(month+1));
         //Log.d("year: ", String.valueOf(year));
-        if(daysLeft == 0 )createNotification();
 
         return daysLeft;
     }
 
-    private void createNotification() {
+
+    private void createNotification(String id, String name) {
         Log.d("NOTIFICATION", "SSSSSS");
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(getActivity())
                         .setSmallIcon(R.drawable.icon)
-                        .setContentTitle("Reminder")
+                        .setContentTitle(name)
                         .setContentText("Don't forget today is your last day!");
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(getActivity(), NewTask.class);
+        Intent resultIntent = new Intent(getActivity(), DetailActivity.class);
+        Log.d("ID PASANDO; " , id);
+        resultIntent.putExtra(Intent.EXTRA_TEXT,id);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -229,17 +222,20 @@ public class ListFragment extends Fragment {
 
 //        Log.d("TIMESTAMP CHOSEN!!!!!!!!!!", c.getString(6));
 
-
+            int  daysLeft = remainingDays(day, month, year);
+            if (daysLeft == 0) createNotification(c.getString(0), c.getString(1) );
             taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                    String.valueOf(remainingDays(day,month,year))});
+                    String.valueOf(daysLeft)});
             while(c.moveToNext()){
 
                 day =Integer.parseInt(c.getString(3));
                 month =Integer.parseInt(c.getString(4));
                 year =Integer.parseInt(c.getString(5));
+                daysLeft = remainingDays(day,month,year);
+                if (daysLeft == 0) createNotification(c.getString(0), c.getString(1) );
 
                 taskList.add(new String[]{c.getString(0), c.getString(1), "Days left: " +
-                        remainingDays(day,month,year)});
+                        daysLeft});
             }
             c.close();
 
